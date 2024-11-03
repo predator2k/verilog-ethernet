@@ -20,6 +20,7 @@ rx_flex_ori
 
 .pytest_cache
 *.fst
+*.lxt
 **/sim_build
 iverilog_dump.v
 
