@@ -3,4 +3,7 @@
 *.pyc
 *.vvp
 *.kate-swp
+*.css
+*.html
+*.js
 
