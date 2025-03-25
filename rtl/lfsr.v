@@ -55,6 +55,12 @@ module lfsr #
     output wire [LFSR_WIDTH-1:0] state_out
 );
 
+generate
+    if (LFSR_CONFIG != "FIBONACCI" && LFSR_CONFIG != "GALOIS") begin
+       $error(); 
+    end
+endgenerate
+
 /*
 
 Fully parametrizable combinatorial parallel LFSR/CRC module.  Implements an unrolled LFSR
@@ -302,10 +308,7 @@ function [LFSR_WIDTH+DATA_WIDTH-1:0] lfsr_mask(input [31:0] index);
                     end
                 end
             end
-        end else begin
-            $error("Error: unknown configuration setting!");
-            $finish;
-        end
+        end 
 
         // reverse bits if selected
         if (REVERSE) begin
@@ -343,16 +346,13 @@ function [LFSR_WIDTH+DATA_WIDTH-1:0] lfsr_mask(input [31:0] index);
     end
 endfunction
 
-// synthesis translate_off
-`define SIMULATION
-// synthesis translate_on
 
 `ifdef SIMULATION
 // "AUTO" style is "REDUCTION" for faster simulation
-parameter STYLE_INT = (STYLE == "AUTO") ? "REDUCTION" : STYLE;
+localparam STYLE_INT = (STYLE == "AUTO") ? "REDUCTION" : STYLE;
 `else
 // "AUTO" style is "LOOP" for better synthesis result
-parameter STYLE_INT = (STYLE == "AUTO") ? "LOOP" : STYLE;
+localparam STYLE_INT = (STYLE == "AUTO") ? "LOOP" : STYLE;
 `endif
 
 genvar n;
@@ -433,10 +433,7 @@ end else if (STYLE_INT == "LOOP") begin
 
 end else begin
 
-    initial begin
-        $error("Error: unknown style setting!");
-        $finish;
-    end
+    $error("Error: unknown style setting!");
 
 end
 
